@@ -9,6 +9,12 @@ output:
 *A course on how to leverage randomness to build fast algorithms for data science problems.*
 </center>
 
+::: {.callout-note}
+## Spring 2027 course preparation
+
+Course materials have been copied from the 2026 offering. The schedule, meeting times, office hours, Discord and Gradescope links, and assignment deadlines are provisional and will be updated for 2027.
+:::
+
 <br>
 
 <div class="row">

@@ -9,3 +9,4 @@ gradescope_grades.csv
 *.log
 *.out
 *.synctex.gz
+**/*.quarto_ipynb

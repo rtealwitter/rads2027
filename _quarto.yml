@@ -18,7 +18,7 @@ website:
   favicon: favicon.ico
   navbar:    
     css: styles.css
-    title: "Spring 2026"
+    title: "Spring 2027"
     search: false
     left:
       - text: "Discord"
