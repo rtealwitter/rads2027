@@ -36,9 +36,9 @@ for row in rows:
             assert f'% Source notebook cell {index}\n' in text, (number, index)
     for relative in re.findall(r'\\(?:input|lstinputlisting)(?:\[[^]]*\])?\{([^}]+)\}', text):
         assert ((ROOT/row['tex']).parent/relative).is_file(), (number, relative)
-    for path in (row['tex'], row['pdf']):
-        assert path in home, path
-    assert row['source_url'] in home
+    assert row['pdf'] in home, row['pdf']
+    assert row['tex'] not in home
+    assert row['source_url'] not in home
     assert r'\$' not in text, f'Unconverted math delimiter in Problem {number}'
 assert sum(r['extracted_images'] for r in rows) == 3
 assert sum(r['code_cells'] for r in rows) == 2

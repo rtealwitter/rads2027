@@ -10,13 +10,10 @@ project:
   resources:
     - CNAME
     - favicon.ico
-    - "topics/*/problems/*.tex"
     - "topics/*/problems/*.pdf"
     - "topics/*/problems/*.py"
     - "topics/*/problems/images/*"
-    - "problems/common/*.tex"
     - "slides/*.pdf"
-    - "project/*.tex"
     - "project/*.pdf"
 
 format:
