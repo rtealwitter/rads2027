@@ -19,7 +19,7 @@ assert len(re.findall(r'Week \d+ \(', home)) == 17
 assert 'Week 9 (3/15 and 3/17)' in home
 assert 'Week 16 (5/3 and 5/5)' in home
 assert 'Spring 2027 course preparation' not in home
-assert (ROOT/'CNAME').read_text().strip() == 'math126.rtealwitter.com'
+assert (ROOT/'CNAME').read_text().strip() == 'rads.rtealwitter.com'
 for row in rows:
     number = row['number']
     source = ROOT/row['source_notebook']

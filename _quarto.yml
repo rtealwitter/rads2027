@@ -29,7 +29,7 @@ format:
     math: mathjax
 
 website:
-  site-url: https://math126.rtealwitter.com
+  site-url: https://rads.rtealwitter.com
   favicon: favicon.ico
   navbar:    
     css: styles.css

@@ -1,6 +1,6 @@
 # CMC Math 126: Randomized Algorithms for Data Science
 
-The Spring 2027 course website is [math126.rtealwitter.com](https://math126.rtealwitter.com).
+The Spring 2027 course website is [rads.rtealwitter.com](https://rads.rtealwitter.com).
 
 
 Classes meet Mondays and Wednesdays, 2:45–4:00pm in Robert Day 126.
