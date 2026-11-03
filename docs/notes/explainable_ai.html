@@ -283,7 +283,7 @@ p_S
 \leq \frac1{m} \sum_{S \subseteq [d] \setminus \{i\}}
 \frac{\left(v(S \cup \{i\}) - v(S)\right)^2}{d\binom{d-1}{|S|}}.
 \]</span></p>
-<p>Using <a href="Concentration.html#chebyshev">Chebyshev’s inequality</a>, we can bound the probability that our estimator deviates from the true value: <span class="math display">\[
+<p>Using <a href="03_distinct_elements.html#chebyshevs-inequality">Chebyshev’s inequality</a>, we can bound the probability that our estimator deviates from the true value: <span class="math display">\[
 \Pr\left(|\tilde{\phi}_i^\text{MC} - \phi_i| \geq \epsilon\right) \leq \frac{\text{Var}(\tilde{\phi}_i^\text{MC})}{\epsilon^2}.
 \]</span> Setting the failure probability to <span class="math inline">\(\delta\)</span>, we could solve for the number of samples <span class="math inline">\(m\)</span> that we need to achieve an <span class="math inline">\(\epsilon\)</span> approximation to <span class="math inline">\(\phi_i\)</span>.</p>
 <p>While an excellent (and simple) estimator, the naive Monte Carlo approach has an unfortunate drawback: Each sampled pair <span class="math inline">\(v(S)\)</span> and <span class="math inline">\(v(S \cup \{i\})\)</span> can only be used for estimating the <span class="math inline">\(i\)</span>th Shapley value <span class="math inline">\(\phi_i\)</span>. In effect, we only use <span class="math inline">\(1/d\)</span> of our total sample budget for each estimate.</p>

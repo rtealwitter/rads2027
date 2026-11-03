@@ -144,7 +144,7 @@ $$
 \frac{\left(v(S \cup \{i\}) - v(S)\right)^2}{d\binom{d-1}{|S|}}.
 $$
 
-Using [Chebyshev's inequality](Concentration.html#chebyshev), we can bound the probability that our estimator deviates from the true value:
+Using [Chebyshev's inequality](03_distinct_elements.html#chebyshevs-inequality), we can bound the probability that our estimator deviates from the true value:
 $$
 \Pr\left(|\tilde{\phi}_i^\text{MC} - \phi_i| \geq \epsilon\right) \leq \frac{\text{Var}(\tilde{\phi}_i^\text{MC})}{\epsilon^2}.
 $$
