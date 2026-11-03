@@ -1,0 +1,57 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 2: Wikipedia Articles}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, February 1, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1gaNqPQmEDnXKQVemAYGs1sATgQe2xpHK?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{wikipedia-articles}{%
+\subsection*{Wikipedia Articles}\label{wikipedia-articles}}
+
+In class, we calculated the number of duplicates in a sample of size \(m\) as \begin{align*}
+D = \sum_{i=1}^m \sum_{j=i+1}^m D_{i,j}
+\end{align*} where \(D_{i,j}\) is an indicator random variable that the \(i\)th and \(j\)th sampled items are the same. In expectation when the samples are drawn uniformly at random, we saw that \begin{align*}
+\mathbb{E}[D] = \frac{m (m-1)}{2 n}.
+\end{align*}
+
+\hypertarget{part-a}{%
+\subsection*{Part A}\label{part-a}}
+
+In practice, we know \(m\) the number of samples we've taken and \(D\) the number of duplicates in the sample. Using these quantities, suggest a method for estimating \(n\)---the set size---inspired by our expression for \(\mathbb{E}[D]\).
+
+\hypertarget{part-b}{%
+\subsection*{Part B}\label{part-b}}
+
+Implement your method from Part A to estimate the number of unique articles in the English Wikipedia. You can access ``random'\,' articles (see the discussion \href{https://en.wikipedia.org/wiki/Wikipedia:FAQ/Technical\#random}{here}) by visiting the link: https://en.wikipedia.org/wiki/Special:Random.
+
+According to the article \href{https://en.wikipedia.org/wiki/English_Wikipedia}{here}, English Wikipedia has 6.7 million articles. How does that compare to your estimate? How does the fact that the random article feature doesn't perfectly return random articles bias your estimate?
+
+Here's some code you can use:
+
+% Source notebook cell 3
+\subsection*{Starter Code and Data}
+\lstinputlisting[language=Python]{problem02_starter.py}
+
+\end{document}

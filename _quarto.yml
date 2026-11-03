@@ -1,9 +1,23 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - syllabus.qmd
+    - "topics/*/reading.qmd"
+  post-render:
+    - python3 tools/post_render.py
   resources:
     - CNAME
-    - psets/starter_code
+    - favicon.ico
+    - "topics/*/problems/*.tex"
+    - "topics/*/problems/*.pdf"
+    - "topics/*/problems/*.py"
+    - "topics/*/problems/images/*"
+    - "problems/common/*.tex"
+    - "slides/*.pdf"
+    - "project/*.tex"
+    - "project/*.pdf"
 
 format:
   html:
@@ -15,15 +29,16 @@ format:
     math: mathjax
 
 website:
+  site-url: https://math126.rtealwitter.com
   favicon: favicon.ico
   navbar:    
     css: styles.css
-    title: "Spring 2027"
+    title: "{{< var term >}}"
     search: false
     left:
       - text: "Discord"
-        href: https://discord.gg/dES3fSPEeC
+        href: "{{< var discord_url >}}"
       - text: "Gradescope"
-        href: https://www.gradescope.com/courses/1233250
+        href: "{{< var gradescope_url >}}"
       - text: "Syllabus"
         href: syllabus.html

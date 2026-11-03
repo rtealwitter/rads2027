@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Power Method &amp; Lanczos Method</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2a503734188be361be4b2ba551627449.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="shortcut icon" href="../../favicon.ico">
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GZHXTPTRRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GZHXTPTRRE');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2027</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://discord.gg/dES3fSPEeC"> 
+<span class="menu-text">Discord</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.gradescope.com/courses/1233250"> 
+<span class="menu-text">Gradescope</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-power-method" id="toc-the-power-method" class="nav-link active" data-scroll-target="#the-power-method">The Power Method</a>
+  <ul class="collapse">
+  <li><a href="#analysis-preliminaries" id="toc-analysis-preliminaries" class="nav-link" data-scroll-target="#analysis-preliminaries">Analysis Preliminaries</a></li>
+  <li><a href="#heart-of-the-analysis" id="toc-heart-of-the-analysis" class="nav-link" data-scroll-target="#heart-of-the-analysis">Heart of the Analysis</a></li>
+  <li><a href="#alternative-guarantee" id="toc-alternative-guarantee" class="nav-link" data-scroll-target="#alternative-guarantee">Alternative Guarantee</a></li>
+  </ul></li>
+  <li><a href="#the-lanczos-method" id="toc-the-lanczos-method" class="nav-link" data-scroll-target="#the-lanczos-method">The Lanczos Method</a>
+  <ul class="collapse">
+  <li><a href="#analysis-preliminaries-1" id="toc-analysis-preliminaries-1" class="nav-link" data-scroll-target="#analysis-preliminaries-1">Analysis Preliminaries</a></li>
+  <li><a href="#heart-of-the-analysis-1" id="toc-heart-of-the-analysis-1" class="nav-link" data-scroll-target="#heart-of-the-analysis-1">Heart of the Analysis</a></li>
+  <li><a href="#finishing-up" id="toc-finishing-up" class="nav-link" data-scroll-target="#finishing-up">Finishing Up</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><strong>Power Method &amp; Lanczos Method</strong></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Previously, we used the SVD to find the best rank-<span class="math inline">\(k\)</span> approximation to a matrix <span class="math inline">\(\mathbf{X}\)</span>. For this application, notice that we didn’t really need to find all the singular vectors and values.</p>
+<p>We can save time by computing an approximate solution to the SVD. In particular, we will only compute the top <span class="math inline">\(k\)</span> singular vectors and values. We can do this with iterative algorithms that achieve time complexity <span class="math inline">\(O(ndk)\)</span> instead of <span class="math inline">\(O(nd^2)\)</span>. Today, we will see two such algorithms: the power method and the Lanczos method.</p>
+<section id="the-power-method" class="level1">
+<h1>The Power Method</h1>
+<p>The power method is a general algorithm for finding the dominant eigenvector of a square matrix. In the context of computing the SVD of a matrix <span class="math inline">\(\mathbf{X} \in \mathbb{R}^{n\times d}\)</span>, we apply the power method to the square, symmetric matrix <span class="math inline">\(\mathbf{A} = \mathbf{X}^\top \mathbf{X} \in \mathbb{R}^{d\times d}\)</span>.</p>
+<p>Because <span class="math inline">\(\mathbf{A}\)</span> is symmetric, it has real, non-negative eigenvalues <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq \ldots \geq \lambda_d \geq 0\)</span> and orthonormal eigenvectors <span class="math inline">\(\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_d\)</span>. Notice that the eigenvectors of <span class="math inline">\(\mathbf{A}\)</span> are exactly the right singular vectors of <span class="math inline">\(\mathbf{X}\)</span>, and its eigenvalues are the squared singular values (<span class="math inline">\(\lambda_j = \sigma_j^2\)</span>).</p>
+<p align="center">
+<img src="images/power.png" width="400px">
+</p>
+<p><strong>Power Method:</strong></p>
+<ul>
+<li>Choose <span class="math inline">\(\mathbf{z}^{(0)}\)</span> randomly. E.g. <span class="math inline">\(\mathbf{z}^{(0)} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_d)\)</span>.</li>
+<li><span class="math inline">\(\mathbf{z}^{(0)} = \mathbf{z}^{(0)} /\|\mathbf{z}^{(0)}\|_2\)</span></li>
+<li>For <span class="math inline">\(i = 1,\ldots, m\)</span>
+<ul>
+<li><span class="math inline">\(\mathbf{z}^{(i)} = \mathbf{A} \mathbf{z}^{(i-1)}\)</span></li>
+<li><span class="math inline">\(n_i = \|\mathbf{z}^{(i)}\|_2\)</span></li>
+<li><span class="math inline">\(\mathbf{z}^{(i)}  = \mathbf{z}^{(i)}/n_i\)</span></li>
+</ul></li>
+<li>Return <span class="math inline">\(\mathbf{z}^{(m)}\)</span></li>
+</ul>
+<p>In other words, each of our iterates <span class="math inline">\(\mathbf{z}^{(i)}\)</span> is simply a scaling of a column in the following matrix: <span class="math display">\[
+\mathbf{K} = \begin{bmatrix} \mathbf{z}^{(0)} &amp; \mathbf{A}\mathbf{z}^{(0)} &amp; \mathbf{A}^2 \mathbf{z}^{(0)} &amp; \mathbf{A}^3\mathbf{z}^{(0)} \ldots \mathbf{A}^{m-1} \mathbf{z}^{(0)}\end{bmatrix}.
+\]</span> Typically we run <span class="math inline">\(m \ll d\)</span> iterations, so <span class="math inline">\(\mathbf{K}\)</span> is a tall, narrow matrix. The span of <span class="math inline">\(\mathbf{K}\)</span>’s columns is called a <strong>Krylov subspace</strong> because it is generated by starting with a single vector <span class="math inline">\(\mathbf{z}^{(0)}\)</span> and repeatedly multiplying by a fixed matrix <span class="math inline">\(\mathbf{A}\)</span>. We will return to <span class="math inline">\(\mathbf{K}\)</span> shortly.</p>
+<section id="analysis-preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-preliminaries">Analysis Preliminaries</h2>
+<p>Let <span class="math inline">\(\mathbf{v}_1, \ldots, \mathbf{v}_d\)</span> be the orthonormal eigenvectors of <span class="math inline">\(\mathbf{A}\)</span>. We can express our initial random vector in terms of this basis: <span class="math display">\[
+\mathbf{z}^{(0)} = c_1^{(0)}\mathbf{v}_1 + c_2^{(0)}\mathbf{v}_2 + \ldots + c_d^{(0)} \mathbf{v}_d = \sum_{j=1}^d c_j^{(0)} \mathbf{v}_j
+\]</span> where the coefficients are given by the inner product <span class="math inline">\(c_j^{(0)} = \langle \mathbf{z}^{(0)}, \mathbf{v}_j \rangle = \mathbf{v}_j^\top \mathbf{z}^{(0)}\)</span>.</p>
+<p>To see what happens when we repeatedly multiply by <span class="math inline">\(\mathbf{A}\)</span>, we can rely on our outer product view of matrix multiplication. Recall the eigendecomposition of <span class="math inline">\(\mathbf{A}\)</span>: <span class="math display">\[
+\mathbf{A} = \sum_{j=1}^d \lambda_j \mathbf{v}_j \mathbf{v}_j^\top
+\]</span></p>
+<p>When we compute the next unnormalized iterate, <span class="math inline">\(\mathbf{A} \mathbf{z}^{(i-1)}\)</span>, the outer product view makes the operation completely transparent: <span class="math display">\[
+\begin{align*}
+\mathbf{A} \mathbf{z}^{(i-1)}
+&amp;= \left( \sum_{j=1}^d \lambda_j \mathbf{v}_j \mathbf{v}_j^\top \right) \mathbf{z}^{(i-1)} \\
+&amp;= \sum_{j=1}^d \lambda_j \mathbf{v}_j (\mathbf{v}_j^\top \mathbf{z}^{(i-1)}) \\
+&amp;= \sum_{j=1}^d \lambda_j c_j^{(i-1)} \mathbf{v}_j
+\end{align*}
+\]</span></p>
+<p>Because <span class="math inline">\(\mathbf{z}^{(i)} = \frac{1}{n_i} \mathbf{A} \mathbf{z}^{(i-1)}\)</span>, we can see exactly how the coefficients update: <span class="math display">\[
+c_j^{(i)} = \frac{1}{n_i}\lambda_j c^{(i-1)}_j.
+\]</span></p>
+<p>The <span class="math inline">\(\frac{1}{n_i}\)</span> term is fixed for all <span class="math inline">\(j\)</span>, but the <span class="math inline">\(\lambda_j\)</span> term will be largest for <span class="math inline">\(j=1\)</span>, and thus <span class="math inline">\(c_1^{(i)}\)</span> will increase in size more than any other term. We will analyze this formally soon.</p>
+<p>First, however, let’s see what it suffices to prove.</p>
+<p><strong>Claim 1</strong>: If <span class="math inline">\(\left|c_j^{(m)}/c_1^{(m)}\right| \leq \sqrt{\epsilon/d}\)</span> for all <span class="math inline">\(j\neq 1\)</span> then either <span class="math inline">\(\|\mathbf{v}_1 -\mathbf{z}^{(m)}\|_2^2\leq 2\epsilon\)</span> or <span class="math inline">\(\|-\mathbf{v}_1 - \mathbf{z}^{(m)}\|_2^2\leq 2\epsilon\)</span>.</p>
+<div class="proof-block">
+<details open="">
+<summary>
+Proof of Claim 1
+</summary>
+<p>Since <span class="math inline">\(c_1^{(m)} \leq 1\)</span>, the hypothesis implies that <span class="math inline">\(\left|c_j^{(m)}\right| \leq \sqrt{\epsilon/d}\)</span>. Since our iterates are unit vectors, <span class="math inline">\(\sum_{k=1}^d \left(c_k^{(m)}\right)^2 = 1\)</span>. It follows that <span class="math inline">\(\left(c_1^{(m)}\right)^2 \geq (1-\epsilon)\)</span> and thus <span class="math inline">\(\left|c_1^{(m)}\right| \geq 1-\epsilon\)</span>.</p>
+<p>For any unit vector <span class="math inline">\(\mathbf{x}\)</span>, we have <span class="math inline">\(\|\mathbf{x} -\mathbf{z}^{(m)}\|_2^2 = 2 - 2\langle\mathbf{x},\mathbf{z}^{(m)}\rangle\)</span>. Since <span class="math inline">\(\langle\mathbf{v}_1,\mathbf{z}^{(m)}\rangle = c_1^{(m)}\)</span>, we conclude that either <span class="math inline">\(\langle\mathbf{v}_1,\mathbf{z}^{(m)}\rangle \geq 1-\epsilon\)</span> or <span class="math inline">\(\langle- \mathbf{v}_1,\mathbf{z}^{(m)}\rangle \geq 1-\epsilon\)</span>.</p>
+Suppose without loss of generality it’s the first: <span class="math inline">\(\langle\mathbf{v}_1,\mathbf{z}^{(m)}\rangle \geq 1-\epsilon\)</span>. Then we would conclude that: <span class="math display">\[
+\|\mathbf{v}_1 -\mathbf{z}^{(m)}\|_2^2 = 2 - 2\langle\mathbf{v}_1,\mathbf{z}^{(m)}\rangle \leq 2 - 2(1-\epsilon) = 2\epsilon.
+\]</span>
+</details>
+</div>
+<p>So, to show the power method converges, our goal is to prove that <span class="math inline">\(\left|c_j^{(m)}/c_1^{(m)}\right| \leq \sqrt{\epsilon/d}\)</span> for all <span class="math inline">\(j\neq 1\)</span>.</p>
+</section>
+<section id="heart-of-the-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="heart-of-the-analysis">Heart of the Analysis</h2>
+<p>To prove this bound, we note that <span class="math inline">\(c_j^{(m)} = S\cdot \lambda_j^{m} c_j^{(0)}\)</span> for any <span class="math inline">\(j\)</span> and <span class="math inline">\(c_1^{(m)} = S\cdot \lambda_1^{m} c_1^{(0)}\)</span> where <span class="math inline">\(S = 1/\prod_{i=1}^m n_i\)</span> is some fixed scaling. So: <span class="math display">\[
+\left|\frac{c_j^{(m)} }{c_1^{(m)} }\right| = \left(\frac{\lambda_j}{\lambda_1}\right)^{m} \left|\frac{c_j^{(0)} }{c_1^{(0)} }\right|.
+\]</span></p>
+<p>As claimed in class (and can be proven as an exercise—try using rotational invariance of the Gaussian), if <span class="math inline">\(\mathbf{z}^{(0)}\)</span> is a randomly initialized start vector, <span class="math inline">\(\left|\frac{c_j^{(0)} }{c_1^{(0)} }\right| \leq d^{3}\)</span> with high probability. That may seem like a lot, but <span class="math inline">\((\lambda_j/\lambda_1)^{m}\)</span> is going to be a tiny number, so it will easily cancel that out. In particular, <span class="math display">\[
+\left(\frac{\lambda_j}{\lambda_1}\right)^{m} = \left(1-\frac{\lambda_1-\lambda_j}{\lambda_1}\right)^{m} \leq (1-\gamma)^{m},
+\]</span> where <span class="math inline">\(\gamma = \frac{\lambda_1-\lambda_2}{\lambda_1}\)</span> is our spectral gap parameter. As long as we set <span class="math display">\[
+m = \frac{\log(d^3\sqrt{d/\epsilon})}{\gamma} = O\left(\frac{\log(d/\epsilon)}{\gamma}\right),
+\]</span> then <span class="math inline">\((1-\gamma)^{m} \leq \frac{\sqrt{\epsilon/d}}{d^3}\)</span>, and thus <span class="math display">\[
+\left|\frac{c_j^{(m)} }{c_1^{(m)} }\right| = \left(\frac{\lambda_j}{\lambda_1}\right)^{m} \left|\frac{c_j^{(0)} }{c_1^{(0)} }\right| \leq \frac{\sqrt{\epsilon/d}}{d^3} \cdot d^3 \leq \sqrt{\epsilon/d},
+\]</span> as desired.</p>
+</section>
+<section id="alternative-guarantee" class="level2">
+<h2 class="anchored" data-anchor-id="alternative-guarantee">Alternative Guarantee</h2>
+<p>In machine learning applications, we care less about actually approximating <span class="math inline">\(\mathbf{v}_1\)</span>, and more that <span class="math inline">\(\mathbf{z}\)</span> is a “good top singular vector” in that it offers a good rank-1 approximation to <span class="math inline">\(\mathbf{X}\)</span>. Using the outer product, we want to prove that the projection matrix error <span class="math display">\[
+\|\mathbf{X} - \mathbf{X}\mathbf{z}\mathbf{z}^\top\|_F^2 = \|\mathbf{X}\|_F^2 - \|\mathbf{X}\mathbf{z}\mathbf{z}^\top\|_F^2
+\]</span> is small, or equivalently, that <span class="math inline">\(\|\mathbf{X}\mathbf{z}\mathbf{z}^\top\|_F^2\)</span> is large.</p>
+<p>Notice that <span class="math inline">\(\|\mathbf{X}\mathbf{z}\mathbf{z}^\top\|_F^2 = \|\mathbf{X}\mathbf{z}\|_2^2 = \mathbf{z}^\top \mathbf{X}^\top \mathbf{X} \mathbf{z} = \mathbf{z}^\top \mathbf{A} \mathbf{z}\)</span>. The largest this could possibly be is <span class="math inline">\(\mathbf{v}_1^\top \mathbf{A} \mathbf{v}_1 = \lambda_1 = \sigma_1^2\)</span>. From the same argument above, where we claimed that either <span class="math inline">\(\langle\mathbf{v}_1,\mathbf{z}^{(m)}\rangle \geq 1-\epsilon\)</span> or <span class="math inline">\(\langle- \mathbf{v}_1,\mathbf{z}^{(m)}\rangle \geq 1-\epsilon\)</span>, it is not hard to check that: <span class="math display">\[
+\|\mathbf{X}\mathbf{z}\mathbf{z}^\top\|_F^2 \geq (1-\epsilon) \sigma_1^2,
+\]</span> so after <span class="math inline">\(O\left(\frac{\log(d/\epsilon)}{\gamma}\right)\)</span> iterations we get a near optimal low-rank approximation.</p>
+</section>
+</section>
+<section id="the-lanczos-method" class="level1">
+<h1>The Lanczos Method</h1>
+<p>We will now see how to improve on the power method using what is known as the Lanczos method. Like the power method, Lanczos is considered a <strong>Krylov subspace method</strong> because it will return a solution <strong>in the span of the Krylov subspace</strong>:</p>
+<p><span class="math display">\[
+\mathbf{K} = \begin{bmatrix} \mathbf{z}^{(0)} &amp; \mathbf{A}\mathbf{z}^{(0)} &amp; \mathbf{A}^2 \mathbf{z}^{(0)} &amp; \mathbf{A}^3\mathbf{z}^{(0)} \ldots \mathbf{A}^{m-1} \mathbf{z}^{(0)}\end{bmatrix}.
+\]</span></p>
+<p>The power method clearly does this—it returns a scaling of the last column of <span class="math inline">\(\mathbf{K}\)</span>. The whole idea behind Lanczos is to avoid “throwing away” information from earlier columns like the power method, but instead to take advantage of the whole space. It turns out that doing so can be very helpful; we will get an iteration bound that depends on <span class="math inline">\(1/\sqrt{\gamma}\)</span> instead of <span class="math inline">\(1/\gamma\)</span>.</p>
+<p>Specifically, to define the Lanczos method, we will let <span class="math inline">\(\mathbf{Q}\in \mathbb{R}^{d\times m}\)</span> be a matrix with orthonormal columns that spans our Krylov subspace. In practice, we do not compute the Krylov matrix <span class="math inline">\(\mathbf{K}\)</span> directly and then orthonormalize it, as this is numerically unstable. Instead, because our target matrix <span class="math inline">\(\mathbf{A}\)</span> is symmetric, we can build the columns of <span class="math inline">\(\mathbf{Q}\)</span> iteratively using a highly efficient “three-term recurrence.”</p>
+<p><strong>Lanczos Method</strong></p>
+<ul>
+<li>Let <span class="math inline">\(\mathbf{z}^{(0)}\)</span> be a random initial starting vector.</li>
+<li>Compute an orthonormal basis <span class="math inline">\(\mathbf{Q}\)</span> for the degree <span class="math inline">\(m\)</span> Krylov subspace spanned by <span class="math inline">\(\{\mathbf{z}^{(0)}, \mathbf{A}\mathbf{z}^{(0)}, \mathbf{A}^2\mathbf{z}^{(0)}, \dots, \mathbf{A}^{m-1}\mathbf{z}^{(0)}\}\)</span>.</li>
+<li>Form the <span class="math inline">\(m \times m\)</span> matrix <span class="math inline">\(\mathbf{T} = \mathbf{Q}^\top \mathbf{A}\mathbf{Q}\)</span>. (Because <span class="math inline">\(\mathbf{A}\)</span> is symmetric, <span class="math inline">\(\mathbf{T}\)</span> will be a tridiagonal matrix, making it very cheap to store and manipulate).</li>
+<li>Let <span class="math inline">\(\mathbf{z}\)</span> be the top eigenvector of <span class="math inline">\(\mathbf{T}\)</span>.</li>
+<li>Return <span class="math inline">\(\mathbf{Q} \mathbf{z}\)</span>.</li>
+</ul>
+<p>Importantly, the step to build <span class="math inline">\(\mathbf{Q}\)</span> only requires <span class="math inline">\(m\)</span> matrix-vector multiplications with <span class="math inline">\(\mathbf{A}\)</span>, each of which can be implemented in <span class="math inline">\(O(nd)\)</span> time (if <span class="math inline">\(\mathbf{A} = \mathbf{X}^\top \mathbf{X}\)</span>, we multiply by <span class="math inline">\(\mathbf{X}\)</span> then <span class="math inline">\(\mathbf{X}^\top\)</span>). The step to find <span class="math inline">\(\mathbf{z}\)</span> might look a bit circular at first glance. We want an approximation algorithm for computing the top eigenvector of <span class="math inline">\(\mathbf{A}\)</span>, and the above method uses a top eigenvector algorithm as a subroutine. But note that <span class="math inline">\(\mathbf{T} = \mathbf{Q}^\top \mathbf{A}\mathbf{Q}\)</span> only has size <span class="math inline">\(m \times m\)</span>, where <span class="math inline">\(m \ll d\)</span> is our iteration count. So even if it’s too expensive to compute a direct eigendecomposition of <span class="math inline">\(\mathbf{A}\)</span>, the eigendecomposition of the small tridiagonal matrix <span class="math inline">\(\mathbf{T}\)</span> can be computed in just <span class="math inline">\(O(m^3)\)</span> time.</p>
+<section id="analysis-preliminaries-1" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-preliminaries-1">Analysis Preliminaries</h2>
+<p>Our first claim is that Lanczos returns the <em>best</em> approximate eigenvector in the span of the Krylov subspace. Then we will argue that there always exists <em>some</em> vector in the span of the subspace that is significantly better than what the power method returns, so the Lanczos solution must be significantly better as well.</p>
+<p><strong>Claim 2</strong>: Amongst all vectors in the span of the Krylov subspace (i.e., any vector <span class="math inline">\(\mathbf{y}\)</span> that can be written as <span class="math inline">\(\mathbf{y} = \mathbf{Q}\mathbf{x}\)</span> for some <span class="math inline">\(\mathbf{x}\in \mathbb{R}^m\)</span>), <span class="math inline">\(\mathbf{y}^* = \mathbf{Q}\mathbf{z}\)</span> maximizes <span class="math inline">\(\mathbf{y}^\top \mathbf{A} \mathbf{y}\)</span> (which equivalently minimizes the low-rank approximation error <span class="math inline">\(\|\mathbf{X} - \mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2\)</span>).</p>
+<div class="proof-block">
+<details open="">
+<summary>
+Proof of Claim 2
+</summary>
+<p>To minimize the approximation error <span class="math inline">\(\|\mathbf{X} - \mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2\)</span>, the expression <span class="math inline">\(\mathbf{X}\mathbf{y}\mathbf{y}^\top\)</span> must represent a valid orthogonal projection of the data onto the vector <span class="math inline">\(\mathbf{y}\)</span>. The outer product <span class="math inline">\(\mathbf{y}\mathbf{y}^\top\)</span> is only a valid projection matrix if <span class="math inline">\(\mathbf{y}\)</span> is a unit vector (meaning its length, or norm, is exactly <span class="math inline">\(1\)</span>).</p>
+<p>Because we define <span class="math inline">\(\mathbf{y} = \mathbf{Q}\mathbf{x}\)</span>, the length of <span class="math inline">\(\mathbf{y}\)</span> depends on <span class="math inline">\(\mathbf{x}\)</span>. Since the matrix <span class="math inline">\(\mathbf{Q}\)</span> is orthonormal, multiplying by <span class="math inline">\(\mathbf{Q}\)</span> preserves the length of any vector. Therefore, for <span class="math inline">\(\mathbf{y}\)</span> to be a unit vector, <span class="math inline">\(\mathbf{x}\)</span> must also be a unit vector (<span class="math inline">\(\|\mathbf{x}\|_2 = 1\)</span>).</p>
+<p>To see why minimizing the approximation error is equivalent to maximizing the quadratic form, we apply the Pythagorean theorem for matrices. Projecting <span class="math inline">\(\mathbf{X}\)</span> onto a unit vector <span class="math inline">\(\mathbf{y}\)</span> separates <span class="math inline">\(\mathbf{X}\)</span> into orthogonal components: <span class="math display">\[
+\|\mathbf{X}\|_F^2 = \|\mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2 + \|\mathbf{X} - \mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2
+\]</span> Therefore, minimizing the residual error <span class="math inline">\(\|\mathbf{X} - \mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2\)</span> is exactly equivalent to maximizing the norm of the projection: <span class="math display">\[
+\|\mathbf{X}\mathbf{y}\mathbf{y}^\top\|_F^2 = \|\mathbf{X}\mathbf{y}\|_2^2 = (\mathbf{X}\mathbf{y})^\top(\mathbf{X}\mathbf{y}) = \mathbf{y}^\top \mathbf{X}^\top \mathbf{X} \mathbf{y} = \mathbf{y}^\top \mathbf{A} \mathbf{y}
+\]</span></p>
+<p>Proving the claim above is now equivalent to finding the unit vector <span class="math inline">\(\mathbf{y}\)</span> that maximizes <span class="math inline">\(\mathbf{y}^\top \mathbf{A} \mathbf{y}\)</span>. Substituting <span class="math inline">\(\mathbf{y} = \mathbf{Q}\mathbf{x}\)</span>, we want to maximize: <span class="math display">\[
+(\mathbf{Q}\mathbf{x})^\top \mathbf{A} (\mathbf{Q}\mathbf{x}) = \mathbf{x}^\top (\mathbf{Q}^\top \mathbf{A} \mathbf{Q}) \mathbf{x}
+\]</span> By the definition of eigenvectors, the unit vector <span class="math inline">\(\mathbf{x}\)</span> that maximizes this quadratic form is exactly the top eigenvector of the <span class="math inline">\(m \times m\)</span> matrix <span class="math inline">\(\mathbf{Q}^\top \mathbf{A} \mathbf{Q}\)</span>.</p>
+Recall from our algorithm definition that we explicitly defined <span class="math inline">\(\mathbf{z}\)</span> to be the top eigenvector of <span class="math inline">\(\mathbf{T} = \mathbf{Q}^\top \mathbf{A} \mathbf{Q}\)</span>. Therefore, the <span class="math inline">\(\mathbf{x}\)</span> that maximizes our objective is exactly <span class="math inline">\(\mathbf{z}\)</span>. Thus, the optimal vector in the subspace is <span class="math inline">\(\mathbf{y}^* = \mathbf{Q}\mathbf{z}\)</span>.
+</details>
+</div>
+<p><strong>Claim 3</strong>: If we run the Lanczos method for <span class="math inline">\(O\left(\frac{\log(d/\epsilon)}{\sqrt{\gamma}}\right)\)</span> iterations, there is <em>some</em> vector <span class="math inline">\(\mathbf{w}\)</span> of the form <span class="math inline">\(\mathbf{w} = \mathbf{Q}\mathbf{x}\)</span> such that either <span class="math inline">\(\langle\mathbf{v}_1,\mathbf{w}\rangle \geq 1-\epsilon\)</span> or <span class="math inline">\(\langle- \mathbf{v}_1,\mathbf{w}\rangle \geq 1-\epsilon\)</span>.</p>
+<p>In other words, there is some <span class="math inline">\(\mathbf{w}\)</span> in the Krylov subspace that has a large inner product with the true top eigenvector <span class="math inline">\(\mathbf{v}_1\)</span>. As seen earlier for the power method, this can be used to prove that e.g.&nbsp;<span class="math inline">\(\mathbf{w}^\top \mathbf{A} \mathbf{w}\)</span> is large, and from <strong>Claim 2</strong>, we know that the vector returned by Lanczos can only do better. So, we focus on proving <strong>Claim 3</strong>.</p>
+</section>
+<section id="heart-of-the-analysis-1" class="level2">
+<h2 class="anchored" data-anchor-id="heart-of-the-analysis-1">Heart of the Analysis</h2>
+<p>The key idea is to observe that any vector in the span of the Krylov subspace of size <span class="math inline">\(m\)</span>—i.e., any vector <span class="math inline">\(\mathbf{w}\)</span> that can be written <span class="math inline">\(\mathbf{w} = \mathbf{Q}\mathbf{x}\)</span>—is equal to: <span class="math display">\[
+\mathbf{w} = p(\mathbf{A})\mathbf{z}^{(0)},
+\]</span> for some <strong>degree <span class="math inline">\(m-1\)</span> polynomial</strong> <span class="math inline">\(p\)</span>. For example, we might have <span class="math inline">\(p(\mathbf{A}) = 2\mathbf{A}^2 - 4\mathbf{A}^3 + \mathbf{A}^6\)</span>. For any degree <span class="math inline">\(m-1\)</span> polynomial <span class="math inline">\(p\)</span>, there is <em>some</em> <span class="math inline">\(\mathbf{x}\)</span> such that <span class="math inline">\(\mathbf{Q}\mathbf{x} = p(\mathbf{A})\mathbf{z}^{(0)}\)</span>. This is because all monomials <span class="math inline">\(\mathbf{z}^{(0)}, \mathbf{A}\mathbf{z}^{(0)}, \ldots, \mathbf{A}^{m-1}\mathbf{z}^{(0)}\)</span> form the basis of our subspace <span class="math inline">\(\mathbf{Q}\)</span>, so any linear combination of them naturally lies within that span.</p>
+<p>This means that finding a good approximate top eigenvector <span class="math inline">\(\mathbf{w}\)</span> in the span of the Krylov subspace reduces to finding a <strong>good polynomial <span class="math inline">\(p(\mathbf{A})\)</span></strong>.</p>
+<p>Using our outer product expansion of <span class="math inline">\(\mathbf{A} = \sum_{j=1}^d \lambda_j \mathbf{v}_j \mathbf{v}_j^\top\)</span>, we know that applying a polynomial to a matrix simply applies that polynomial to its eigenvalues: <span class="math display">\[
+p(\mathbf{A}) = \sum_{j=1}^d p(\lambda_j) \mathbf{v}_j \mathbf{v}_j^\top
+\]</span></p>
+<p>Therefore, when we multiply this polynomial matrix by our initial vector <span class="math inline">\(\mathbf{z}^{(0)}\)</span>, the outer product isolates the coordinates exactly as we saw in the power method: <span class="math display">\[
+\begin{align*}
+p(\mathbf{A})\mathbf{z}^{(0)}
+&amp;= \left( \sum_{j=1}^d p(\lambda_j) \mathbf{v}_j \mathbf{v}_j^\top \right) \mathbf{z}^{(0)} \\
+&amp;= \sum_{j=1}^d p(\lambda_j) (\mathbf{v}_j^\top \mathbf{z}^{(0)}) \mathbf{v}_j \\
+&amp;= \sum_{j=1}^d p(\lambda_j) c_j^{(0)} \mathbf{v}_j
+\end{align*}
+\]</span></p>
+<p>Letting <span class="math inline">\(g_j = c_j^{(0)}p(\lambda_j)\)</span>, our goal is identical to the power method: we want to show that the coefficient <span class="math inline">\(g_1\)</span> (associated with the top eigenvector) is <em>much larger</em> than <span class="math inline">\(g_j\)</span> for all <span class="math inline">\(j \neq 1\)</span>. In other words, we want to find a polynomial such that <span class="math inline">\(p(t)\)</span> is small for all values of <span class="math inline">\(0\leq t \leq \lambda_2\)</span> (the sub-dominant eigenvalues), but then suddenly <strong>jumps</strong> to be large at <span class="math inline">\(\lambda_1\)</span>.</p>
+<p>The simplest degree <span class="math inline">\(m\)</span> polynomial that does this is <span class="math inline">\(p(t) = t^m\)</span> (which is exactly what the power method uses). However, it turns out there are much more <em>sharply</em> jumping polynomials. This is achieved by shifting and scaling a <a href="https://en.wikipedia.org/wiki/Chebyshev_polynomials">Chebyshev polynomial</a>. Chebyshev polynomials are famous in approximation theory because they minimize the maximum absolute value over a specific interval (in this case, suppressing the lesser eigenvalues between <span class="math inline">\(0\)</span> and <span class="math inline">\(1-\gamma\)</span>) while growing extremely fast outside of it.</p>
+<p>An example that jumps at <span class="math inline">\(1\)</span> is shown below. The difference from <span class="math inline">\(t^m\)</span> is remarkable—even though the polynomial <span class="math inline">\(p\)</span> shown below is nearly as small for all <span class="math inline">\(0\leq t&lt; 1\)</span>, it is much larger at <span class="math inline">\(t=1\)</span>.</p>
+<p align="center">
+<img src="images/basic_jump.png" width="400px">
+</p>
+<p align="center">
+<img src="images/cheby_jump.png" width="400px">
+</p>
+<p>Concretely we can claim the following, which is a bit tricky to prove, but well known (see <a href="https://arxiv.org/pdf/1504.05477.pdf">Lemma 5 here</a> for a full proof).</p>
+<p><strong>Claim 4:</strong> There is a degree <span class="math inline">\(O\left(\sqrt{\frac{1}{\gamma}}\log\frac{d}{\epsilon}\right)\)</span> polynomial <span class="math inline">\(\hat{p}\)</span> such that <span class="math inline">\(\hat{p}(1) = 1\)</span> and <span class="math inline">\(|\hat{p}(t)| \leq \epsilon\)</span> for <span class="math inline">\(0 \leq t \leq 1-\gamma\)</span>.</p>
+<p>In contrast, to ensure that <span class="math inline">\(t^m\)</span> satisfies the above bounds, we would need degree <span class="math inline">\(m = O\left({\frac{1}{\gamma}\log\frac{d}{\epsilon}}\right)\)</span>—a quadratically worse bound. This explicitly accounts for the quadratic difference in iteration performance between the Lanczos and Power Methods.</p>
+</section>
+<section id="finishing-up" class="level2">
+<h2 class="anchored" data-anchor-id="finishing-up">Finishing Up</h2>
+<p>Finally, we use <strong>Claim 4</strong> to finish the analysis of Lanczos. Consider the vector <span class="math inline">\(\mathbf{w} = \hat{p}\left(\frac{1}{\lambda_1}\mathbf{A}\right)\mathbf{z}^{(0)}\)</span>, which as argued above lies in the Krylov subspace. As discussed before, our job is to prove that the coordinates along the lesser eigenvectors (<span class="math inline">\(j \neq 1\)</span>) become vanishingly small compared to the coordinate along <span class="math inline">\(\mathbf{v}_1\)</span>. Specifically, we want: <span class="math display">\[
+\left| \frac{w_j}{w_1} \right| = \left| \frac{c_j^{(0)}\hat{p}\left(\frac{\lambda_j}{\lambda_1}\right)}{c_1^{(0)}\hat{p}\left(\frac{\lambda_1}{\lambda_1}\right)} \right| \leq \sqrt{\epsilon/d},
+\]</span> for all <span class="math inline">\(j \neq 1\)</span>, as long as <span class="math inline">\(\hat{p}\)</span> is chosen to have degree <span class="math inline">\(m = O\left(\sqrt{\frac{1}{\gamma}}\log\frac{d}{\epsilon}\right)\)</span>.</p>
+<p>Consider the input to the polynomial in the numerator: <span class="math display">\[
+\frac{\lambda_j}{\lambda_1} = 1 - \left(1 - \frac{\lambda_j}{\lambda_1}\right) \leq 1 - \frac{\lambda_1 - \lambda_2}{\lambda_1} = 1-\gamma
+\]</span></p>
+<p>Because the ratio <span class="math inline">\(\frac{\lambda_j}{\lambda_1}\)</span> is bounded by <span class="math inline">\(1-\gamma\)</span>, we can use Claim 4. If we construct our Chebyshev polynomial with an error bound of <span class="math inline">\(\epsilon' = \frac{\sqrt{\epsilon/d}}{d^3}\)</span>, then <span class="math inline">\(\hat{p}\left(\frac{\lambda_j}{\lambda_1}\right) \leq \epsilon'\)</span>.</p>
+<p>The denominator evaluated at the top eigenvalue simplifies because <span class="math inline">\(\lambda_1/\lambda_1 = 1\)</span>, and Claim 4 guarantees that <span class="math inline">\(\hat{p}(1) = 1\)</span>. So the denominator is just <span class="math inline">\(c_1^{(0)}\cdot 1\)</span>.</p>
+<p>Assuming our random initialization <span class="math inline">\(\mathbf{z}^{(0)}\)</span> is not perfectly orthogonal to the top eigenvector, it is a standard probabilistic fact that <span class="math inline">\(\left|c_j^{(0)}/c_1^{(0)}\right|\leq d^3\)</span> with high probability. Substituting these bounds into our ratio gives: <span class="math display">\[
+\left| \frac{w_j}{w_1} \right| = \left| \frac{c_j^{(0)}\hat{p}\left(\frac{\lambda_j}{\lambda_1}\right)}{c_1^{(0)}\hat{p}(1)} \right| \leq d^3 \cdot \epsilon' = d^3 \cdot \frac{\sqrt{\epsilon/d}}{d^3} = \sqrt{\frac{\epsilon}{d}}
+\]</span></p>
+<p>This bounds the coefficients. To conclude <strong>Claim 3</strong>, we normalize our vector <span class="math inline">\(\bar{\mathbf{w}} = \mathbf{w} / \|\mathbf{w}\|_2\)</span> and check its inner product with <span class="math inline">\(\mathbf{v}_1\)</span>. We can bound the total squared norm of <span class="math inline">\(\mathbf{w}\)</span> using our coordinate bounds. Since <span class="math inline">\(|w_j / w_1| \leq \sqrt{\epsilon/d}\)</span>, squaring both sides gives <span class="math inline">\(w_j^2 \leq w_1^2(\epsilon/d)\)</span>. We sum this over all <span class="math inline">\(d-1\)</span> remaining dimensions: <span class="math display">\[
+\|\mathbf{w}\|_2^2 = w_1^2 + \sum_{j=2}^d w_j^2 \leq w_1^2 + (d-1) \left( \frac{\epsilon}{d} w_1^2 \right) &lt; w_1^2(1 + \epsilon)
+\]</span></p>
+<p>Finally, the inner product of our normalized approximation with the true eigenvector is exactly the normalized first coordinate: <span class="math display">\[
+\langle\mathbf{v}_1, \bar{\mathbf{w}}\rangle = \frac{w_1}{\|\mathbf{w}\|_2} \geq \frac{w_1}{\sqrt{w_1^2(1+\epsilon)}} = \frac{1}{\sqrt{1+\epsilon}}
+\]</span></p>
+<p>For small values of <span class="math inline">\(\epsilon\)</span>, by Taylor expansion, <span class="math inline">\(\frac{1}{\sqrt{1+\epsilon}} \approx 1 - \epsilon/2\)</span>, which is strictly greater than the <span class="math inline">\(1-\epsilon\)</span> bound we set out to prove. Thus, <strong>Claim 3</strong> is proven: there exists a vector in the Krylov subspace exceedingly close to the true top eigenvector.</p>
+
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/math126\.rtealwitter\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

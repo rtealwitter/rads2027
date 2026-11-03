@@ -1,0 +1,81 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 22: Leverage Scores of Shapley Value Regression}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, May 3, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1S1VpnBCQBTEnzVzdkMH-6f-qAWz_mpqE?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{leverage-scores-of-shapley-value-regression}{%
+\subsection*{Leverage Scores of Shapley Value Regression}\label{leverage-scores-of-shapley-value-regression}}
+
+Shapley values, originally from cooperative game theory and now widely used in explainable AI, can be uniquely defined as the optimal solution to a weighted linear regression problem.
+
+Let \(v: 2^{[d]} \to \mathbb{R}\) be a value function mapping subsets of \(d\) features to a real number, with \(v(\emptyset) = 0\). The vector of Shapley values \(\boldsymbol{\phi} \in \mathbb{R}^d\) minimizes the weighted least squares objective: \begin{align*}
+\min_{\boldsymbol{\beta} \in \mathbb{R}^d: \langle \boldsymbol{\beta}, \mathbf{1} \rangle = v([d])}
+\sum_{S \subseteq [d]: 0 < |S| < d}
+\left( v(S) - \sum_{i \in S} \beta_i \right)^2 w_S
+\end{align*} where the weights are \(w_S = \frac{1}{\binom{d}{|S|} |S| (d-|S|)}\).
+
+To analyze this system, we can convert it into an unconstrained ordinary least squares problem. Define the uncentered indicator matrix \(\mathbf{A}' \in \mathbb{R}^{(2^d-2) \times d}\) such that its \((S,i)\)-th entry is \(\mathbb{1}[i \in S] \sqrt{w_S}\). We also define the centering projection matrix \(\mathbf{P} = \mathbf{I} - \frac{1}{d} \mathbf{1} \mathbf{1}^\top\). The centered design matrix for our regression is given by: \begin{align*}
+\mathbf{A} = \mathbf{A}' \mathbf{P}
+\end{align*}
+
+In this problem, you will analyze the geometry of this regression by computing the \textbf{leverage scores} of the matrix \(\mathbf{A}\). The leverage score \(\ell_S\) for a row \(\mathbf{a}_S^\top\) is defined as the \(S\)-th diagonal element of the hat matrix: \begin{align*}
+\ell_S = \mathbf{a}_S^\top (\mathbf{A}^\top \mathbf{A})^+ \mathbf{a}_S
+\end{align*} where \((\mathbf{A}^\top \mathbf{A})^+\) is the Moore-Penrose pseudoinverse.
+
+\hypertarget{part-a-the-uncentered-covariance-matrix}{%
+\subsection*{Part A: The Uncentered Covariance Matrix}\label{part-a-the-uncentered-covariance-matrix}}
+
+Let \(\mathbf{M} = \mathbf{A}'^\top \mathbf{A}'\). Argue that \(\mathbf{M}\) is permutation invariant, meaning its diagonal entries are all equal to some constant \(\alpha\), and its off-diagonal entries are all equal to some constant \(\beta\).
+
+Then, express \(\mathbf{M}\) in the form \(c \mathbf{I} + \gamma \mathbf{1} \mathbf{1}^\top\) in terms of \(\alpha\) and \(\beta\).
+
+\hypertarget{part-b-the-centered-covariance-matrix}{%
+\subsection*{Part B: The Centered Covariance Matrix}\label{part-b-the-centered-covariance-matrix}}
+
+Using the fact that \(\mathbf{A} = \mathbf{A}' \mathbf{P}\) and your result from Part A, show that the centered covariance matrix simplifies to \(\mathbf{A}^\top \mathbf{A} = c \mathbf{P}\), where \(c = \alpha - \beta\). \emph{(Recall that \(\mathbf{P} \mathbf{1} = \mathbf{0}\) and \(\mathbf{P}^2 = \mathbf{P}\).)}
+
+Next, evaluate \(c\) by computing the quadratic form \(\mathbf{v}^\top (\mathbf{A}^\top \mathbf{A}) \mathbf{v}\) for the difference vector \(\mathbf{v} = \mathbf{e}_i - \mathbf{e}_j\) (where \(i \neq j\)).
+
+\emph{Hint: Evaluate \(\|\mathbf{A}' \mathbf{v}\|^2\) by summing over the rows of \(\mathbf{A}'\), and use the combinatorial identity \(\frac{\binom{d-2}{k-1}}{\binom{d}{k}} = \frac{k(d-k)}{d(d-1)}\) to show that \(c = \frac{1}{d}\).}
+
+\hypertarget{part-c-the-pseudoinverse}{%
+\subsection*{Part C: The Pseudoinverse}\label{part-c-the-pseudoinverse}}
+
+Recall that \(\mathbf{P}\) is a projection matrix. Given that \(\mathbf{A}^\top \mathbf{A} = \frac{1}{d} \mathbf{P}\), what is the Moore-Penrose pseudoinverse \((\mathbf{A}^\top \mathbf{A})^+\)? Briefly justify your answer.
+
+\hypertarget{part-d-computing-the-leverage-scores}{%
+\subsection*{Part D: Computing the Leverage Scores}\label{part-d-computing-the-leverage-scores}}
+
+The \(S\)-th row of \(\mathbf{A}\) is given by \(\mathbf{a}_S^\top = \sqrt{w_S} \mathbf{1}_S^\top \mathbf{P}\), where \(\mathbf{1}_S \in \{0,1\}^d\) is the binary indicator vector for the subset \(S\). Substitute \(\mathbf{a}_S\) and \((\mathbf{A}^\top \mathbf{A})^+\) into the leverage score formula \(\ell_S = \mathbf{a}_S^\top (\mathbf{A}^\top \mathbf{A})^+ \mathbf{a}_S\).
+
+Expand the resulting quadratic form \(\mathbf{1}_S^\top \mathbf{P} \mathbf{1}_S\) and substitute the definition of the Shapley weights \(w_S\) to prove that: \begin{align*}
+\ell_S = \frac{1}{\binom{d}{|S|}}
+\end{align*}
+
+\textbf{Interpretation:} What does this final result tell you about the total sum of leverage scores for all subsets of a fixed size \(k\)? How does the total sum of \emph{all} leverage scores relate to the rank of the matrix \(\mathbf{A}\)?
+
+\end{document}

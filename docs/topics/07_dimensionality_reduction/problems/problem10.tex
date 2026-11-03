@@ -1,0 +1,63 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 10: Applications of the Johnson-Lindenstrauss Lemma}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, March 1, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1fzNpF5fdn_7jALETy3NqZkmSRAnzqt1N?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{applications-of-the-johnson-lindenstrauss-lemma}{%
+\subsection*{Applications of the Johnson-Lindenstrauss Lemma}\label{applications-of-the-johnson-lindenstrauss-lemma}}
+
+Consider vectors \(\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathbb{R}^d\). Let \(k = O\left( \frac{\log n}{\epsilon^2} \right)\). The JL lemma tells us that, for a special random matrix \(\mathbf{\Pi} \in \mathbb{R}^{k \times d}\), \begin{align*}
+(1-\epsilon) \| \mathbf{x}_i - \mathbf{x}_j \|_2^2
+\leq \| \mathbf{\Pi x}_i - \mathbf{\Pi x}_j \|_2^2
+\leq (1+\epsilon) \| \mathbf{x}_i - \mathbf{x}_j \|_2^2
+\end{align*} with probability 9/10.
+
+% Source notebook cell 3
+\hypertarget{part-a-inner-product}{%
+\subsection*{Part A: Inner Product}\label{part-a-inner-product}}
+
+Show that we can use the JL lemma as stated above to show that inner-products are also preserved. In particular, under the same conditions as above, \begin{align*}
+|
+\langle \mathbf{x}_i, \mathbf{x}_j \rangle
+- \langle \mathbf{\Pi x}_i, \mathbf{\Pi x}_j \rangle
+|
+\leq \frac12 \epsilon (\|\mathbf{x}_i\|_2^2 + \|\mathbf{x}_j\|_2^2)
+\end{align*} with probability 9/10.
+
+% Source notebook cell 4
+\hypertarget{part-b-join-size-estimation}{%
+\subsection*{Part B: Join Size Estimation}\label{part-b-join-size-estimation}}
+
+One powerful application of sketching is in database applications. For example, a common goal is to estimate the \emph{inner join size} of two tables without performing an actual inner join (which is expensive, as it requires enumerating the keys of the tables).
+
+Consider two sets of unique keys \(X = \{x_1, \ldots, x_m\}\) and \(Y = \{y_1, \ldots, y_n\}\) which are subsets of \(1,2, \ldots, U\). Our goal is to estimate \(|X\cap Y|\) based on small space compressions of \(X\) and \(Y\).
+
+Using your result from above, describe a method based on inner product estimation that constructs independent sketches of \(X\) and \(Y\) of size \(k = O\left(\frac{\log n}{\epsilon^2}\right)\) and from these sketches can return an estimate \(Z\) for \(|X\cap Y|\) satisfying \begin{align*}
+    \left|Z - |X\cap Y|\right| \leq \epsilon (|X|+|Y|)
+\end{align*} with probability \(9/10\).
+
+\end{document}

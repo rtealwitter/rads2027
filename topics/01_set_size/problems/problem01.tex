@@ -1,0 +1,58 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 1: Law of Large Numbers and Conditional Information}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, January 25, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1dVCKdYtpymvJlFcipDiUd813Liet0uWv?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{part-a-law-of-large-numbers}{%
+\subsection*{Part A: Law of Large Numbers}\label{part-a-law-of-large-numbers}}
+
+Let's consider the global distribution of heights: suppose it's normally distributed (a Gaussian) with mean \(\mu=5.63\) and standard deviation \(\sigma=.24\).
+
+Generate \(n=1000\) samples from this distribution and plot a histogram.
+
+Next, consider the distribution of \emph{average} heights in a sample of 100 people. Specifically, sample \(100\) people, compute their average height, and repeat \(n=1000\) times. Plot the distribution of these average heights on the same histogram as before.
+
+How do the empirical expectations of the two distributions compare? How about their variances?
+
+% Source notebook cell 3
+\hypertarget{part-b-conditional-information}{%
+\subsection*{Part B: Conditional Information}\label{part-b-conditional-information}}
+
+Suppose I tell you that I have two cats. What's the probability that at least one of my cats is a boy when\ldots{}
+
+\begin{itemize}
+\item
+  I don't provide any additional information.
+\item
+  I tell you that one of my cats is a girl (I haven't told you which).
+\item
+  I tell you that one of my cats is a girl and born on a Sunday (I still haven't told you which).
+\end{itemize}
+
+Why does the probability keep dropping?
+
+\end{document}

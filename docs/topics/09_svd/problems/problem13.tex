@@ -1,0 +1,65 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 13: Point Reconstruction from Distances}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, March 22, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1T_F7Jp4Ts38uBG8D4GGSW33pY70OzFbg?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{point-reconstruction-from-distances}{%
+\subsection*{Point Reconstruction from Distances}\label{point-reconstruction-from-distances}}
+
+Suppose you are given all pairwise distances between a set of points \(\mathbf{x}_1, \ldots, \mathbf{x}_n \in \mathbb{R}^d\). You can assume that \(d \ll n\). Let \(\mathbf{D} \in \mathbb{R}^{n \times n}\) be the distance matrix with \(\mathbf{D}_{i,j} = \| \mathbf{x}_i - \mathbf{x}_j \|_2^2\). You would like to recover the location of the original points, at least up to possible rotations and translations which do not change pairwise distances.
+
+Assume that \(\sum_{i=1}^n \mathbf{x}_i = \mathbf{0}\), i.e., the points are centered at the origin.
+
+\hypertarget{part-a}{%
+\subsection*{Part A}\label{part-a}}
+
+Describe a polynomial time algorithm for learning \(\sum_{i=1}^n \|\mathbf{x}_i\|_2^2\).
+
+Hint: Expand \(\| \mathbf{x}_i - \mathbf{x}_j\|_2^2\).
+
+\hypertarget{part-b}{%
+\subsection*{Part B}\label{part-b}}
+
+Inspired by the above approach, describe an efficient algorithm for learning \(\| \mathbf{x}_i \|_2^2\) for each \(i\).
+
+\hypertarget{part-c}{%
+\subsection*{Part C}\label{part-c}}
+
+Describe an algorithm for recovering a set of points \(\mathbf{x}_1,\ldots, \mathbf{x}_n\) which realize the distances in \(\mathbf{D}\).
+
+\textbf{Hint:} This is where you will use the SVD! It might help to prove that \(\mathbf{D}\) has rank \(\leq d + 2\).
+
+\hypertarget{part-d}{%
+\subsection*{Part D}\label{part-d}}
+
+Implement your algorithm and run it on the U.S. cities dataset below. Note that the distances in the file are unsquared Euclidean distances, so you need to square them to obtain \(\mathbf{D}\). Plot your estimated city locations on a 2D plot and label the cities to make it clear how the plot is oriented
+
+% Source notebook cell 3
+\subsection*{Starter Code and Data}
+\lstinputlisting[language=Python]{problem13_starter.py}
+
+\end{document}

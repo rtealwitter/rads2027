@@ -1,0 +1,53 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 9: Lonely Points}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, February 22, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1Fyna74I7NyIELGjNG9HPTnPHmAhBt5TB?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{lonely-points}{%
+\subsection*{Lonely Points}\label{lonely-points}}
+
+Let \(\mathbf{x}\) and \(\mathbf{y}\) be two random points picked independently and uniformly from the \(d\)-dimensional hypercube on \([0, 1]^d\). That is, the \(i\)th entry \(x_i\) is continuous, uniform random variable on \([0,1]\). We are interested in the Euclidean distance between \(\mathbf{x}\) and \(\mathbf{y}\), specifically the squared distance \(D_d = \|\mathbf{x} - \mathbf{y}\|_2^2\).
+
+% Source notebook cell 3
+\hypertarget{part-a-expected-distance}{%
+\subsection*{Part A: Expected Distance}\label{part-a-expected-distance}}
+
+First, show that for a single dimension \(i\), we have \(\mathbb{E}[(x_i - y_i)^2] = 1/6\). Use linearity of expectation to find the expected squared distance \(\mu_d = \mathbb{E}[D_d]\) for the full vectors.
+
+% Source notebook cell 4
+\hypertarget{part-b-variance-of-distance}{%
+\subsection*{Part B: Variance of Distance}\label{part-b-variance-of-distance}}
+
+We want to know if the distance varies a lot or stays close to the mean.Calculate the variance of one component: \(\sigma_i^2 = \text{Var}((x_i - y_i)^2)\). (You don't need the exact number, just show it is a constant \(k\) that doesn't depend on \(d\)). Then calculate the total variance \(\text{Var}(D_d)\). How does the ``coefficient of variation'' (the ratio of standard deviation to the mean) \(\frac{\sqrt{\text{Var}(D_d)}}{\mathbb{E}[D_d]}\) behave?
+
+% Source notebook cell 5
+\hypertarget{part-c-lonely-points}{%
+\subsection*{Part C: Lonely Points}\label{part-c-lonely-points}}
+
+Show that as \(d \to \infty\), the coefficient of variation approaches 0. Suppose you draw 1,000 random points. You look for the ``nearest neighbor'' to \(\mathbf{x}\) and the ``farthest neighbor'' to \(\mathbf{x}\). Based on your limit, what can you say about the ratio of these two distances? Why does this make clustering algorithms difficult in high dimensions?
+
+\end{document}

@@ -10,7 +10,9 @@ In this class, we will explore how data science is deployed at scale. The questi
 
 **Prerequisites:** Linear Algebra (MATH 60 or CSCI 48 or equivalent), Data Structures and Advanced Programming (CSCI 62 or equivalent).
 
-**Structure:** We will meet on Tuesdays and Thursdays from 2:45 to 4:00pm in Kravis 164.
+**Structure:** We will meet on {{< var class_days >}} from {{< var class_time >}} in {{< var class_location >}}.
+
+**Office Hours:** {{< var office_hours >}} in {{< var office_hours_location >}}.
 
 **Resources**: This class is based on Chris Musco’s phenomenal algorithmic machine learning and data science [course](https://www.chrismusco.com/amlds2023/) at NYU. While we do not have a textbook, I have prepared typed notes for every lecture; I highly recommend you read the notes before each class.
 

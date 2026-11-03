@@ -10,3 +10,5 @@ gradescope_grades.csv
 *.out
 *.synctex.gz
 **/*.quarto_ipynb
+.slurm-logs/
+__pycache__/

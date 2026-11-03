@@ -1,0 +1,101 @@
+\documentclass{article}
+\input{../../../problems/common/preamble.tex}
+\title{Math 126 Problem 7: Deriving the Normal Distribution}
+\author{} % Put your name here.
+\date{Spring 2027}
+\begin{document}
+\maketitle
+
+\hypertarget{submission-instructions}{%
+\subsection*{Submission Instructions}\label{submission-instructions}}
+
+Please upload your work to Gradescope by \textbf{11:59pm on Monday, February 15, 2027 (Pacific time).}
+
+\begin{itemize}
+\item
+  You are encouraged to discuss ideas and work with your classmates. However, you \emph{must acknowledge} your collaborators at the top of each solution on which you collaborated with others and you \emph{must write} your solutions independently.
+\item
+  Your solutions to theory questions must be written legibly, or typeset in LaTeX or markdown.
+\item
+  I recommend that you write your solutions in a Python notebook using Google Colab.
+\item
+  You should submit your solutions as a \emph{single PDF} via the assignment on Gradescope.
+\end{itemize}
+
+\textbf{Grading:} The point of the problem set is for \emph{you} to learn. To this end, I hope to disincentivize the use of LLMs by \emph{not} grading your work for correctness. Instead, you will grade your own work by comparing it to my solutions. This self-grade is due the Friday \emph{after} the problem set is due, also on Gradescope.
+
+\noindent Original notebook: \href{https://colab.research.google.com/drive/1ciQVopHz3Cb9xFEL5UnwU49hLGCGxnF_?usp=sharing}{Google Colab}.
+
+% Source notebook cell 2
+\hypertarget{deriving-the-normal-distribution}{%
+\subsection*{Deriving the Normal Distribution}\label{deriving-the-normal-distribution}}
+
+% Source notebook cell 3
+\begin{center}
+\includegraphics[width=0.65\linewidth,height=0.28\textheight,keepaspectratio]{images/problem07-figure1.jpg}
+\end{center}
+
+% Source notebook cell 4
+In this problem, we will derive the density function of the normal distribution from the example of a dartboard. Let \(f: \mathbb{R}^d \to [0,1]\) be a probability density function that describes the probability a dart lands at the point \((x,y)\). We want our probability density function \(f\) to have two properties:
+
+\begin{itemize}
+\item
+  \textbf{Radial Symmetry:} The probability that a dart lands at a point depends only on the distance between the point and the origin.
+\item
+  \textbf{Independence:} Coordinates are independent e.g., knowing the \(x\)-coordinate does not give us information about the \(y\)-coordinate.
+\end{itemize}
+
+From the radial symmetry property, we can conclude that \begin{align*}
+f(x,y) = f(r) = f(\sqrt{x^2 + y^2})
+\end{align*} where \(r=\sqrt{x^2+y^2}\) is the distance between the origin and \((x,y)\).
+
+From the independence property, we can conclude that \(f(x,y) = g(x) h(y)\) for some functions \(g\) and \(h\). Further, the radial symmetry property tells us that \(f(x,y) = f(y,x) = g(y) h(x)\) so \(g\) and \(h\) must be the same function. That is, \begin{align*}
+f(x,y) = g(x) g(y).
+\end{align*}
+
+% Source notebook cell 5
+\hypertarget{part-a}{%
+\subsection*{Part A}\label{part-a}}
+
+Up to rescaling, we can assume that \(g(0)=1\). Use this fact and plug in the point \((r,0)\) to conclude that \(f\) and \(g\) are the same function.
+
+% Source notebook cell 6
+\hypertarget{part-b}{%
+\subsection*{Part B}\label{part-b}}
+
+Define the function \(h(x) = f(\sqrt{x})\). In particular, \begin{align*}
+f(\sqrt{x^2 + y^2}) = f(x) f(y) \Leftrightarrow
+h(x^2 + y^2) = h(x^2) h(y^2).
+\end{align*} Use this property to show that \begin{align*}
+h(x_1 + x_2 + \ldots + x_n) = h(x_1) h(x_2) \cdot \ldots \cdot h(x_n).
+\end{align*} Then prove that \(h(n) = h(1)^n\).
+
+Without loss of generality, let \(h(1) = b\).
+
+% Source notebook cell 7
+\hypertarget{part-c}{%
+\subsection*{Part C}\label{part-c}}
+
+Let \(p\) and \(q\) be any integers. Prove that \begin{align*}
+h\left(\frac{p}{q}\right) = b^{\frac{p}{q}}.
+\end{align*}
+
+\textbf{Hint:} Consider the expression \begin{align*}
+h\left(\frac{p}{q} \cdot q \right).
+\end{align*}
+
+As long as \(h\) is continuous, conclude that \(h(x) = b^x\) for any real number since the rational numbers are dense in the real number line.
+
+% Source notebook cell 8
+\hypertarget{part-d}{%
+\subsection*{Part D}\label{part-d}}
+
+You have shown that \(h(x) = b^x\). Further, \(h(x) = e^{cx}\) for some real number \(c\). Then \(f(x) = h(x^2) = e^{c x^2}\). Recall this implies the density function of \(x\) and \(y\) is \(f(x,y) = f(x) f(y) = e^{c (x^2 + y^2)}\).
+
+For \(f\) to be a valid probability density function, what constraint do we have on \(c\)? If we wanted to make the distribution more concentrated, how should we change \(c\)?
+
+Except for the normalization, we have explained every part of the multivariate normal distribution given below \begin{align*}
+f(x,y) = \frac1{\sigma^2 \cdot 2 \pi} \exp\left(-\frac{x^2 + y^2}{2\sigma^2}\right).
+\end{align*} Why is there a normalization?
+
+\end{document}

@@ -114,3 +114,16 @@ mjx-container[jax="SVG"] > svg {
   display: inline-block;
 }
 
+/* Filled link highlights, matching the data mining course. */
+main a[href]:not(.anchorjs-link):not(.btn):hover,
+main a[href]:not(.anchorjs-link):not(.btn):focus-visible {
+  color: #fff;
+  background-color: #84182b;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+main a[href]:not(.anchorjs-link):not(.btn):hover code,
+main a[href]:not(.anchorjs-link):not(.btn):focus-visible code {
+  color: inherit;
+}
+

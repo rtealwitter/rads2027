@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Distinct Elements</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-2a503734188be361be4b2ba551627449.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="shortcut icon" href="../../favicon.ico">
+<script id="MathJax-script" async="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-GZHXTPTRRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GZHXTPTRRE');
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2027</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://discord.gg/dES3fSPEeC"> 
+<span class="menu-text">Discord</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.gradescope.com/courses/1233250"> 
+<span class="menu-text">Gradescope</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../syllabus.html"> 
+<span class="menu-text">Syllabus</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#chebyshevs-inequality" id="toc-chebyshevs-inequality" class="nav-link active" data-scroll-target="#chebyshevs-inequality">Chebyshev’s Inequality</a></li>
+  <li><a href="#linearity-of-variance" id="toc-linearity-of-variance" class="nav-link" data-scroll-target="#linearity-of-variance">Linearity of Variance</a>
+  <ul class="collapse">
+  <li><a href="#coin-example" id="toc-coin-example" class="nav-link" data-scroll-target="#coin-example">Coin Example</a></li>
+  </ul></li>
+  <li><a href="#distinct-elements" id="toc-distinct-elements" class="nav-link" data-scroll-target="#distinct-elements">Distinct Elements</a>
+  <ul class="collapse">
+  <li><a href="#variance-reduction" id="toc-variance-reduction" class="nav-link" data-scroll-target="#variance-reduction">Variance Reduction</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><strong>Distinct Elements</strong></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>We’ve seen the power of linearity of expectation, Markov’s inequality, and the union bound. This class, we will learn and use linearity of variance and Chebyshev’s inequality.</p>
+<section id="chebyshevs-inequality" class="level2">
+<h2 class="anchored" data-anchor-id="chebyshevs-inequality">Chebyshev’s Inequality</h2>
+<p><strong>Lemma:</strong> Let <span class="math inline">\(X\)</span> be a random variable with expectation <span class="math inline">\(\mathbb{E}[X]\)</span> and variance <span class="math inline">\(\sigma^2 = \textrm{Var}[X]\)</span>. Then for any <span class="math inline">\(k &gt; 0\)</span>,</p>
+<p><span class="math display">\[
+\Pr(|X - \mathbb{E}[X]| \geq k \sigma) \leq \frac{1}{k^2}.
+\]</span></p>
+<p>When the variance is smaller, we expect <span class="math inline">\(X\)</span> to concentrate more closely around its expectation. Chebyshev’s inequality is one way to formalize this intuition.</p>
+<p>There are two main benefits of Chebyshev’s over Markov’s:</p>
+<ul>
+<li><p>Chebyshev’s applies to any random variable <span class="math inline">\(X\)</span>. In contrast, Markov’s requires that the random variable <span class="math inline">\(X\)</span> is non-negative.</p></li>
+<li><p>Chebyshev’s gives a two-sided bound: we bound the probability that <span class="math inline">\(|X - \mathbb{E}[X]|\)</span> is large, which means that <span class="math inline">\(X\)</span> isn’t too far above <em>or</em> below its expectation. In contrast, Markov’s only bounds the probability that <span class="math inline">\(X\)</span> is larger than <span class="math inline">\(\mathbb{E}[X]\)</span>.</p></li>
+</ul>
+<p>While Chebyshev’s gives a more general bound, it also needs a bound on the variance of <span class="math inline">\(X\)</span>. In general, bounding the variance is harder than bounding the expectation.</p>
+<p>Note: There’s no hard rule for which one to apply! Both Markov’s and Chebyshev’s are useful in different settings.</p>
+<div class="proof-block">
+<details closed="">
+<summary>
+Proof of Chebyshev’s Inequality
+</summary>
+<p>We’ll apply Markov’s inequality to the non-negative random variable <span class="math inline">\(S = (X - \mathbb{E}[X])^2\)</span>. By Markov’s, <span class="math display">\[
+\Pr\left(S \geq t \right) \leq \frac{\mathbb{E}[S]}{t}.
+\]</span> Observe that <span class="math inline">\(\mathbb{E}[S] = \mathbb{E}[(X-\mathbb{E}[X])^2] = \textrm{Var}(X)\)</span>, plug in <span class="math inline">\(t = k^2 \sigma^2\)</span>, and use the definition of <span class="math inline">\(S\)</span>. Then</p>
+<p><span class="math display">\[
+\Pr \left((X - \mathbb{E}[X])^2 \geq k^2 \sigma^2\right)
+\leq \frac{\textrm{Var}(X)}{k^2 \sigma^2}.
+\]</span> We’ll take the square root of the event inside the probability (this preserves the inequality) and observe that <span class="math inline">\(\textrm{Var}(X) = \sigma^2\)</span>. Then simplifying</p>
+<span class="math display">\[
+\Pr\left(|X - \mathbb{E}[X]| \geq k \sigma\right) \leq \frac{1}{k^2}.
+\]</span>
+</details>
+</div>
+</section>
+<section id="linearity-of-variance" class="level2">
+<h2 class="anchored" data-anchor-id="linearity-of-variance">Linearity of Variance</h2>
+<p>In order to use Chebyshev’s inequality, we need to bound the variance. Luckily, there’s a helpful tool to help us compute the variance when we have a sum of independent random variables.</p>
+<p><strong>Fact:</strong> For <em>pairwise independent</em> random variables <span class="math inline">\(X_1, \ldots, X_m\)</span>,</p>
+<p><span class="math display">\[
+\textrm{Var}[X_1 + X_2 + \ldots + X_m] = \textrm{Var}[X_1]
++ \textrm{Var}[X_2] + \ldots + \textrm{Var}[X_m].
+\]</span></p>
+<p>Notice that we require pairwise independence so for any <span class="math inline">\(i, j \in \{1, \ldots, m\}\)</span>, <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> are independent. Pairwise independence is a strictly weaker requirement than <span class="math inline">\(k\)</span>-wise independence (when <span class="math inline">\(k&gt;2\)</span>) which requires that for all <span class="math inline">\(k\)</span> variables <span class="math inline">\(X_1, \ldots, X_k\)</span> and all values <span class="math inline">\(v_1, \ldots, v_k\)</span>, <span class="math display">\[
+\Pr(X_1 = v_1, \ldots, X_k=v_k) = \Pr(X_1=v_1) \cdot \ldots \cdot \Pr(X_k = v_k).
+\]</span></p>
+<p><strong>Question:</strong> Can you think of three random variables that are pairwise independent but not 3-wise independent?</p>
+<p>Here’s one answer: Let <span class="math inline">\(X_1\)</span> be a random variable that is equally likely to be <span class="math inline">\(1\)</span> and <span class="math inline">\(-1\)</span>, let <span class="math inline">\(X_2\)</span> be another random variable that is equally likely to be <span class="math inline">\(1\)</span> and <span class="math inline">\(-1\)</span>, and let <span class="math inline">\(X_3 = X_1 X_2\)</span>. If we only look at two of the random variables, they appear independent. But if we look at all three of them, the values of two give us the value of the third.</p>
+<section id="coin-example" class="level3">
+<h3 class="anchored" data-anchor-id="coin-example">Coin Example</h3>
+<p>In order to gain familiarity with Chebyshev’s inequality and linearity of variance, let’s go through an example with coin flips. Let <span class="math inline">\(C_1, \ldots, C_{100}\)</span> be independent random variables that are <span class="math inline">\(1\)</span> with probability <span class="math inline">\(\frac{1}{2}\)</span> and <span class="math inline">\(0\)</span> otherwise.</p>
+<p>Let the number of heads <span class="math inline">\(H\)</span> be <span class="math inline">\(\sum_{i=1}^{100} C_i\)</span>. By linearity of expectation, we know that <span class="math display">\[
+\mathbb{E}[H] = \sum_{i=1}^{100} \mathbb{E}[C_i] = \sum_{i=1}^{100} \frac{1}{2}=50.
+\]</span> Since <span class="math inline">\(C_i\)</span> is an indicator random variable, we know <span class="math display">\[
+\textrm{Var}(C_i) = \mathbb{E}[C_i^2] - \mathbb{E}[C_i]^2 = \frac{1}{2} - \left(\frac{1}{2}\right)^2 = \frac{1}{4}.
+\]</span> Then, by linearity of variance (all the flips are independent), we know that <span class="math display">\[
+\textrm{Var}(H) = \sum_{i=1}^{100} \textrm{Var}(C_i) = \sum_{i=1}^{100} \frac{1}{4} = 25.
+\]</span></p>
+<p>Now let’s apply Chebyshev’s inequality. We know <span class="math inline">\(\mathbb{E}[H] = 50\)</span> and <span class="math inline">\(\textrm{Var}(H) = \sigma^2 =25\)</span>. <span class="math display">\[
+\Pr(|H - 50| \geq 5 \cdot 4 ) \leq \frac{1}{4^2} = \frac{1}{16}.
+\]</span> So, with at least <span class="math inline">\(93\%\)</span> chance, we get between 30 and 70 heads.</p>
+</section>
+</section>
+<section id="distinct-elements" class="level2">
+<h2 class="anchored" data-anchor-id="distinct-elements">Distinct Elements</h2>
+<p>The first problem that we’ll consider is estimating distinct elements. The problem, like many we’ll see in this class (e.g.&nbsp;frequent items estimation), is posed in the streaming model. In this model, we have a massive data set that arrives in a sequential stream. There is far too much data to store or process in a single location but we still want to analyze the data. To do this, we must compress the data on the fly, storing some smaller data structure which still contains useful information.</p>
+<p>The input to the distinct elements problem is <span class="math inline">\(x_1, \ldots, x_n\)</span> where each item is in a huge universe of items <span class="math inline">\(\mathcal{U}\)</span>. The output is the number of <em>distinct</em> inputs <span class="math inline">\(D\)</span>. For example, if the input is <span class="math inline">\(1, 10, 2, 4, 9, 2, 10, 4\)</span> then the output is <span class="math inline">\(D=5\)</span>.</p>
+<p>The distinct elements problem has many applications: Distinct users visiting a webpage. Distinct values in a database column. Distinct queries to a search engine. Distinct motifs in a DNA sequence. Because the problem is so general, implementations of the algorithm we’ll describe today (and several refinements of it) are deployed in practice at companies like Google, Yahoo, Twitter, Facebook, and many more.</p>
+<p>The naive approach to solve the problem is to build a dictionary of all items seen so far. Every time we see an element, we hash it and check if we already have it in the dictionary. Unfortunately, the space complexity is <span class="math inline">\(O(D)\)</span> and, if we have millions or billions of distinct elements, this naive approach is infeasible.</p>
+<p>Our goal is to return an estimate <span class="math inline">\(\hat{D}\)</span> that satisfies <span class="math display">\[
+(1-\epsilon) D \leq \hat{D} \leq (1+\epsilon) D
+\]</span> but only uses <span class="math inline">\(O(1/\epsilon^2)\)</span> space. This should be surprising: We can use space that is (basically) independent of the number of distinct elements!</p>
+<p>The algorithm we’ll use to accomplish this is surprisingly simple. Choose a random hash function <span class="math inline">\(h: U \rightarrow [0,1]\)</span>. We’ll initialize an estimate <span class="math inline">\(S\)</span>. For every item we see in the stream, we’ll set <span class="math display">\[
+S \gets \min(S, h(x_i)).
+\]</span> Once we process the stream, return <span class="math inline">\(\frac{1}{S} - 1\)</span>.</p>
+<p>The figure below describes the algorithm. Elements arrive in a stream and we hash each item to the real number line between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. By the definition of the hash function, each repeated item hashes to the same point. We maintain a value <span class="math inline">\(S\)</span>, the minimum hashed value we’ve seen so far.</p>
+<center>
+<img src="images/min_hash.png" width="800">
+</center>
+<!--
+Note: 
+We pretend that we can hash to real numbers.
+However, it is impossible to implement such an $h(x)$ in practice.
+Instead, we replace it with $\frac{g(x)}{k}$ where $g$ is a hash function that
+maps to $\{0, 1, \ldots k \}$ for a sufficiently large $k$.
+All the results hold if this "discrete" hash function is used instead,
+but the analysis is simpler if we assume access to $h$.
+Just like when we assumed uniform random hash functions, this is a useful abstraction which makes understanding and analyzing algorithms easier.
+-->
+<p>Why do we return the estimate <span class="math inline">\(\hat{D} = \frac{1}{S}- 1\)</span>? Intuitively, when <span class="math inline">\(D\)</span> is larger, <span class="math inline">\(S\)</span> will be smaller because we get more chances to get small values. But the reason behind the exact estimate is that</p>
+<p><strong>Lemma:</strong> <span class="math inline">\(\mathbb{E}[S] = \frac{1}{D+1}\)</span>.</p>
+<p>We’ll see two proofs.</p>
+<div class="proof-block">
+<details closed="">
+<summary>
+Calculus Proof
+</summary>
+<p>We’ll use the identity that <span class="math display">\[
+\mathbb{E}[X] = \int \Pr(X \geq x) dx
+\]</span> for a continuous and non-negative random variable <span class="math inline">\(X\)</span>. To see this, notice that <span class="math display">\[
+X = \int_{x=0}^X dx = \int_{x=0}^\infty \mathbb{1}[X \geq x] dx.
+\]</span> Taking expectation yields the identity.</p>
+Now let’s deploy the identity for the continuous random variable <span class="math inline">\(S\)</span>: <span class="math display">\[
+\mathbb{E}[S] = \int_{s=0}^1 \Pr(S \geq s) ds
+= \int_{s=0}^1 (1-s)^D d s
+\]</span> <span class="math display">\[
+= \left. \frac{-(1-s)^{D+1}}{D+1} \right|_{s=0}^1 = \frac{1}{D+1}.
+\]</span> In the second equality, we used the observation that the minimum <span class="math inline">\(S\)</span> is greater than a value <span class="math inline">\(s\)</span> if and only if all <span class="math inline">\(D\)</span> hashed values are greater than <span class="math inline">\(s\)</span>.
+</details>
+</div>
+<p>We can understand every step of the calculus proof but it doesn’t give us a deeper understanding for <em>why</em> the lemma is true. Let’s turn to another proof “from the book”. This phrase comes from Paul Erdős, a prolific Hungarian mathematician, who believed that there are proofs so simple and elegant that they were written in a divine book.</p>
+<div class="proof-block">
+<details closed="">
+<summary>
+Proof from the Book
+</summary>
+<p>We’ll use the following observation: For any event <span class="math inline">\(A\)</span> and random variable <span class="math inline">\(x\)</span>, <span class="math display">\[\begin{align}
+    \mathbb{E}_x[\Pr[A|x]]
+    = \mathbb{E}_x[\mathbb{E}[\mathbb{1}[A] \mid x]]
+    = \mathbb{E}[\mathbb{1}[A]]
+    = \Pr[A].
+\end{align}\]</span> The first and last equality follow because <span class="math inline">\(\mathbb{1}[A]\)</span> is an indicator random variable for event <span class="math inline">\(A\)</span>. The middle equality follows by the <a href="https://en.wikipedia.org/wiki/Law_of_total_expectation">law of total expectation</a>. After a little bit of thought, the law of total expectation is intuitive. But you can prove it to yourself by plugging in the definition of expectations and exchanging sums/integrals, or you can find the proof online <a href="https://en.wikipedia.org/wiki/Law_of_total_expectation#Informal_proof">here</a>.</p>
+<p>Back to our proof, we know that <span class="math inline">\(h_1,\ldots,h_D\)</span> are i.i.d. (independent and identically distributed) uniform samples drawn from the interval <span class="math inline">\([0,1]\)</span>. Recall that <span class="math inline">\(S = \min_{i\in[D]} h_i\)</span>. Since all the <span class="math inline">\(h_i\)</span> are drawn from the interval between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>, we can interpret <span class="math inline">\(S\)</span> as the probability that the next hashed value is less than the minimum of the first <span class="math inline">\(D\)</span> hashed values. Mathematically, <span class="math display">\[\begin{align}
+    S = \Pr[h_{D+1} \leq \min_{i\in[D]} h_i \mid h_1,\ldots,h_D]
+\end{align}\]</span> Now we can compute the expectation of <span class="math inline">\(S\)</span>: <span class="math display">\[\begin{align*}
+    \mathbb{E}_{h_1,\ldots,h_D}[S]
+    &amp;= \mathbb{E}_{h_1,\ldots,h_D}[\Pr[h_{D+1} \leq \min_{i\in[D]} h_i \mid h_1,\ldots,h_D]]\\
+    &amp;= \Pr_{h_1,\ldots,h_{D+1}}[h_{D+1} \leq \min_{i\in[D]} h_i] \\
+    &amp;= \frac1{D+1}.
+\end{align*}\]</span> The first equality follows by our alternative definition of <span class="math inline">\(S\)</span>, the second equality follows by the first observation in the proof, the final equality follows because each <span class="math inline">\(h_i\)</span> is equally likely to be the minimum of all <span class="math inline">\(D+1\)</span>.</p>
+</details>
+</div>
+<!--
+Consider a particular set of hashed values $h_1, \ldots, h_D$.
+Then the random variable $S$ is the minimum of these values.
+Equivalently, because the hashed values are on the interval 0 to 1,
+$S$ is the probability that the next hashed value is less than the minimum value.
+Since the hashed values are independent and uniformly random,
+the probability that the next hashed value is the minimum is $\frac{1}{D+1}$.
+Formally,
+$$
+\mathbb{E}[S] = \mathbb{E}_{h_1, \ldots, h_D} \left[
+S | h_1, \ldots, h_D
+\right]
+$$
+$$
+= \mathbb{E}_{h_1, \ldots, h_D} \left[
+\Pr(h_{D+1} < \min(h_1, \ldots, h_D)) | h_1, \ldots, h_D)
+\right]
+$$
+$$
+= \frac{1}{D+1}.
+$$
+-->
+<p>We now know the expectation of <span class="math inline">\(S\)</span> (twice) but, in order to apply Chebyshev’s inequality, we need to also bound the variance. Recall that</p>
+<p><span class="math display">\[
+\textrm{Var}(S) = \mathbb{E}[S^2] - \mathbb{E}[S]^2.
+\]</span></p>
+<p>We know <span class="math inline">\(\mathbb{E}[S]\)</span> but we don’t yet know <span class="math inline">\(\mathbb{E}[S^2]\)</span>.</p>
+<p><strong>Lemma:</strong> <span class="math inline">\(\mathbb{E}[S^2] = \frac{2}{(D+1)(D+2)}\)</span>.</p>
+<p>We’ll again see two proofs.</p>
+<div class="proof-block">
+<details closed="">
+<summary>
+Calculus Proof
+</summary>
+<p>Using a calculus proof similar to the one for the expectation, we know <span class="math display">\[
+\mathbb{E}[S^2] = \int_{s=0}^1 \Pr(S^2 \geq s) ds
+= \int_{s=0}^1 \Pr(S \geq \sqrt{s}) ds
+= \int_{s=0}^1 (1-\sqrt{s})^D d s.
+\]</span> After a <span class="math inline">\(u\)</span>-substitution with <span class="math inline">\(u=1-\sqrt{s}\)</span>, we have that the last equality is <span class="math display">\[
+\frac{2}{(D+1)(D+2)}.
+\]</span></p>
+</details>
+</div>
+<p>Again, the calculus proof is correct but it doesn’t give us a deeper understanding.</p>
+<div class="proof-block">
+<details closed="">
+<summary>
+Proof from the Book
+</summary>
+<p>We can apply the same machinery that we used in the prior proof from the book. The key observation now is that <span class="math inline">\(S^2\)</span> is the probability that the next <em>two</em> hashed values are both less than the minimum of the first <span class="math inline">\(D\)</span> hashed values. Formally, <span class="math display">\[
+S^2 = \Pr(\max(h_{D+1}, h_{D+2}) \leq \min(h_1, \ldots, h_D) | h_1, \ldots, h_D).
+\]</span> What’s the probability that both of the next hashed values are less the minimum of the first <span class="math inline">\(D\)</span> hashed values? Well, that’s the probability that <em>either</em> the first hashed value is less than the minimum of the first <span class="math inline">\(D+1\)</span> hashed values and the second hashed value is less than all <span class="math inline">\(D+2\)</span> hashed values <em>or</em> the second hashed value is less than the minimum of the first <span class="math inline">\(D+1\)</span> hashed values and the first hashed value is less than all <span class="math inline">\(D+2\)</span> hashed values. The probability of the first event is <span class="math inline">\(\frac{1}{(D+1)(D+2)}\)</span> and the probability of the second event is <span class="math inline">\(\frac{1}{(D+1)(D+2)}\)</span>.</p>
+<p>Using the same analysis from the prior proof from the book, we know that <span class="math display">\[\begin{align}
+\mathbb{E}_{h_1, \ldots, h_D}[S^2]
+&amp;= \Pr_{h_1, \ldots, h_{D+2}}(\max(h_{D+1}, h_{D+2}) \leq \min(h_1, \ldots, h_D)) \\
+&amp;= \frac{2}{(D+1)(D+2)}.
+\end{align}\]</span></p>
+</details>
+</div>
+<!--
+Consider a particular set of hashed values $h_1, \ldots, h_D$.
+Then the random variable $S$ is the minimum of these values.
+Equivalently, because the hashed values are on the interval 0 to 1, $S$ is the probability that the next hashed value is less than the minimum value.
+Similarly, $S^2$ is the probability that the next *two* hashed values are both less than the minimum value.
+
+So far, we know
+$$
+\mathbb{E}[S^2] = \mathbb{E}_{h_1, \ldots, h_D} \left[
+S^2 | h_1, \ldots, h_D \right]
+$$
+$$
+= \mathbb{E}_{h_1, \ldots, h_D} \left[
+\Pr(\max(h_{D+1}, h_{D+2}) \leq \min(h_1, \ldots, h_D) | h_1, \ldots, h_D \right].
+$$
+What's the probability that both of the next hashed values are less the minimum of the first $D$ hashed values? 
+Well, that's the probability that *either* the first hashed value is less than the minimum of the first $D+1$ hashed values and the second hashed value is less than all $D+2$ hashed values *or* the second hashed value is less than the minimum of the first $D+1$ hashed values and the first hashed value is less than all $D+2$ hashed values.
+The probability of the first event is $\frac{1}{(D+1)(D+2)}$ and the probability of the second event is $\frac{1}{(D+1)(D+2)}$.
+So
+$$
+\mathbb{E}[S^2] = \frac{2}{(D+1)(D+2)}.
+$$
+-->
+<p>Remember our goal is to compute the variance. With our expressions for <span class="math inline">\(\mathbb{E}[S]\)</span> and <span class="math inline">\(\mathbb{E}[S^2]\)</span>, we know <span class="math display">\[
+\textrm{Var}(S) = \frac{2}{(D+1)(D+2)} - \frac{1}{(D+1)^2}
+\leq \frac{1}{(D+1)^2}.
+\]</span></p>
+<p>Let’s try applying Chebyshev’s inequality. We know <span class="math inline">\(\mathbb{E}[S] = \frac{1}{D+1} = \mu\)</span> and <span class="math inline">\(\textrm{Var}(S) \leq \frac{1}{(D+1)^2} = \mu^2\)</span>. The bound we want is <span class="math inline">\(\Pr(|S - \mu | \geq \epsilon \mu) \leq \delta\)</span> where <span class="math inline">\(\delta\)</span> is a (small) probability of failure. Instead, Chebyshev’s inequality gives <span class="math display">\[
+\Pr(|S - \mu| \geq \epsilon \mu) \leq \Pr( |S - \mu| \geq \epsilon \sigma )
+\leq \frac{1}{\epsilon^2}.
+\]</span> But <span class="math inline">\(\epsilon\)</span> is a number less than <span class="math inline">\(1\)</span> so the bound is vacuous!!</p>
+<section id="variance-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="variance-reduction">Variance Reduction</h3>
+<p>Just as we repeated the core subroutine in the count-min algorithm, we’ll repeat the core subroutine in this algorithm. The new algorithm is to choose <span class="math inline">\(k\)</span> random hash functions <span class="math inline">\(h_1, \ldots, h_k: \mathcal{U} \rightarrow [0, 1]\)</span>. We’ll keep <span class="math inline">\(k\)</span> independent sketches of the minimum value <span class="math inline">\(S_1, \ldots, S_k\)</span> that are all initialized to <span class="math inline">\(1\)</span>. Then, when we see item <span class="math inline">\(x_i\)</span>, we update <span class="math display">\[S_j \gets \min(S_j, h_j(x_i))\]</span> for every <span class="math inline">\(j \in \{1, \ldots, k\}\)</span>. At the end of the stream, we take the average <span class="math inline">\(\bar{S} = (S_1 + \ldots + S_k)/k\)</span> and return the estimate <span class="math inline">\(\hat{D} = \frac{1}{\bar{S}} - 1\)</span>.</p>
+<p>Our new algorithm is an example of a general strategy for variance reduction. We repeat many independent trials and take the mean. Given i.i.d. (independent, identically distributed) random variables, <span class="math inline">\(X_1, \ldots, X_k\)</span> with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, we know that</p>
+<p><span class="math display">\[
+\mathbb{E} \left[ \frac{1}{k} \sum_{i=1}^k X_i \right]
+= \frac{1}{k} \sum_{i=1}^k \mathbb{E} \left[  X_i \right]
+= \mu
+\]</span> and</p>
+<p><span class="math display">\[
+\textrm{Var}\left[
+\frac{1}{k}
+\sum_{i=1}^k X_i\right]
+= \frac{1}{k^2}\sum_{i=1}^k \textrm{Var} \left[X_i\right]
+= \frac{\sigma^2}{k}
+\]</span> where we used linearity of expectation and linearity of variance (since each <span class="math inline">\(X_i\)</span> is independent).</p>
+<p>Applying the variance reduction analysis to our algorithm, we have that <span class="math inline">\(\mathbb{E}[\bar{S}] = \mu\)</span> as before but now <span class="math inline">\(\textrm{Var}(\bar{S}) \leq \frac{\mu^2}{k}\)</span>. Then Chebyshev’s inequality gives <span class="math display">\[
+\Pr\left(|\bar{S} - \mu| \geq c \frac{\mu}{\sqrt{k}} \right) \leq \frac{1}{c^2}.
+\]</span> Setting <span class="math inline">\(c = \frac{1}{\sqrt{\delta}}\)</span> and <span class="math inline">\(k = \frac{1}{\epsilon^2 \delta}\)</span>, we have <span class="math display">\[
+\Pr(|\bar{S} - \mu| \geq \epsilon \mu) \leq \delta.
+\]</span></p>
+<p>We’re <em>nearly</em> done except that we have only bounded <span class="math inline">\(\bar{S}\)</span> around its expectation. We really need to bound <span class="math inline">\(\hat{D}\)</span> around its expectation. We know that with probability <span class="math inline">\(1-\delta\)</span>, <span class="math display">\[
+(1-\epsilon) \mathbb{E}[\bar{S}]
+\leq \bar{S} \leq (1+\epsilon) \mathbb{E}[\bar{S}].
+\]</span> Inverting gives, <span class="math display">\[
+\frac{1}{(1+\epsilon) \mathbb{E}[\bar{S}]} \leq \frac{1}{\bar{S}} \leq \frac{1}{(1-\epsilon) \mathbb{E}[\bar{S}]}.
+\]</span> We can use the fact (easily verified on a graphing calculator like <a href="https://www.desmos.com/calculator/5u3kwrwq7p">Desmos</a>) that <span class="math inline">\(\frac{1}{1+\epsilon} \geq 1 - 2\epsilon\)</span> and <span class="math inline">\(\frac{1}{1-\epsilon} \leq 1 + 2\epsilon\)</span>. We subtract 1 from each term to get <span class="math display">\[
+(1-2\epsilon) \frac{1}{\mathbb{E}[\bar{S}]} - 1
+\leq \frac{1}{\bar{S}} - 1 \leq (1+2\epsilon)
+\frac{1}{\mathbb{E}[\bar{S}]} - 1.
+\]</span> Then, for <span class="math inline">\(\mathbb{E}[\bar{S}] \leq \frac12\)</span>, we have <span class="math display">\[
+(1-4 \epsilon)\left( \frac{1}{\mathbb{E}[\bar{S}]} - 1 \right)
+\leq \frac{1}{\bar{S}} - 1
+\leq (1+4\epsilon) \left( \frac{1}{\mathbb{E}[\bar{S}]} - 1 \right).
+\]</span> (You can check the inequalities by plotting <a href="https://www.desmos.com/calculator/qwxy34rllc">here</a>.) Since <span class="math inline">\(D = \frac{1}{\mathbb{E}[\bar{S}]} - 1\)</span> and <span class="math inline">\(\hat{D} = \frac{1}{\bar{S}} - 1\)</span>, we have that with probability <span class="math inline">\(1-\delta\)</span>, <span class="math display">\[
+(1-4\epsilon) D \leq \hat{D} \leq (1+4\epsilon) D.
+\]</span> We lose a small factor on the <span class="math inline">\(\epsilon\)</span> but this goes into the big-O notation. So our final space complexity is <span class="math inline">\(O(k \log D) = O\left(\frac{\log D}{\epsilon^2 \delta}\right)\)</span>. The <span class="math inline">\(\log D\)</span> factor comes from the fact that each of the <span class="math inline">\(k\)</span> hash functions needs <span class="math inline">\(\log D\)</span> bits to represent the input. Impressively, the space complexity has no <em>linear</em> dependence on the number of distinct elements <span class="math inline">\(D\)</span>. We know that the <span class="math inline">\(\frac{1}{\epsilon^2}\)</span> dependence cannot be improved but we can get a better bound depending on <span class="math inline">\(\log(1/\delta)\)</span> instead of <span class="math inline">\(1/\delta\)</span> by using a stronger concentration inequality.</p>
+<p>For our analysis, we assumed that we could hash to real numbers on <span class="math inline">\([0,1]\)</span>. In practice, the hash function maps to bit vectors and the estimate <span class="math inline">\(S\)</span> is the number of leading zeros in the bit vector. Intuitively, the more distinct hashes we see, the higher we expect the maximum number of leading zeros to be.</p>
+<p>While the space complexity is very small, the true benefit of the algorithm is that it can be implemented in a <em>distributed</em> setting. The estimates <span class="math inline">\(S_i\)</span> from each machine can be sent to a central location and the final <span class="math inline">\(S = \min_i S_i\)</span> can be computed there. Use cases of the algorithm include counting the number of distinct users in New York City that made at least one search containing the word ‘car’ in the last month or counting the number of distinct subject lines in emails sent by users that have registered in the last week (to detect spam). Answering such a query requires a distributed linear scan over the database that can be done in <a href="https://arxiv.org/abs/1208.0225">less than two seconds</a> using Google’s implementation.</p>
+
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const wordsPerMinute = 200;
+  const text = document.body.innerText;
+  const words = text.trim().split(/\s+/).length;
+  const readingTime = Math.ceil(words / wordsPerMinute);
+
+  const readTimeEl = document.createElement("div");
+  readTimeEl.innerText = `⏱️ ${readingTime} min read`;
+
+  // Style it to appear centered
+  readTimeEl.style.fontSize = "0.9em";
+  readTimeEl.style.margin = "1em auto";
+  readTimeEl.style.textAlign = "left";
+  readTimeEl.style.width = "100%";
+
+  const title = document.querySelector("h1");
+  if (title) {
+    title.parentNode.insertBefore(readTimeEl, title.nextSibling);
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/math126\.rtealwitter\.com");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
